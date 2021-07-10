@@ -1,0 +1,126 @@
+
+html{
+  font-size:62.5%; /* default size brwser 16px*62.5=10px =1rem */
+  box-sizing: border-box;
+}
+
+body{
+  margin:0;
+  height:100vh;
+  font-size:1.6rem;
+  font-family:Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+}
+
+#root{
+  height: 100%;
+}
+/*Layout*/
+.container{
+  display: grid;
+  grid-template-areas: 'header' 'main' 'footer';
+  grid-template-columns: 1fr;
+  grid-template-rows: 5rem 1fr 50px;
+  height: 100%;
+
+}
+
+header{
+  grid-area:header;
+  background-color:#203040;
+
+}
+
+main{
+  grid-area: main;
+  padding: 1rem;
+}
+
+footer{
+  grid-area: footer;
+  background-color: #203040;
+  color:#ffffff;
+}
+/*CMMON*/
+
+h1{
+  font-size: 1.8rem;
+  padding: 1rem 0;
+}
+
+h2{
+  font-size:1.6rem;
+  padding: 1rem 0;
+
+}
+
+
+a{
+  text-decoration: none;
+}
+a:hover{
+  color:#ff8000;
+}
+/*HEADER*/
+header a{
+  color:#ffffff;
+  padding:1rem;
+}
+a.brand{
+  color:#ffffff;
+  font-size:3rem;
+  font-weight:bold;
+}
+
+.row{
+  display: flex;
+  flex-wrap: wrap; /*RESPONSIVE NO ENOUGH SPACE NEXT LINE*/
+  justify-content: space-between;
+  align-items:center;
+}
+
+.row.center{
+  justify-content: center;
+}
+
+/**Image*/
+
+img{
+border-radius:50px; 
+}
+
+img.medium{
+  max-width:29rem ;
+  width:100%;
+  padding:3px;
+}
+
+
+/*CARD*/
+.card{
+  border:1px #c0c0c0 solid;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  margin:10px;
+}
+
+.card-body{
+  padding:10px;
+}
+
+.card-body > *{
+  margin-bottom: 5px;
+}
+.price{
+  font-size:20px;
+
+}
+
+/*RATING*/
+
+span{
+  color:#f0c040;
+  margin :1px;
+}
