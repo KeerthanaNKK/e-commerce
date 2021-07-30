@@ -1,7 +1,22 @@
+import bcrypt from 'bcryptjs';
+
 const data = {
+    users: [
+        {
+            name:'Anahtreek',
+            email:'admin@example.com',
+            password: bcrypt.hashSync('1234',8),
+            isAdmin:true,
+        },
+        {
+            name:'Precious',
+            email:'user@example.com',
+            password: bcrypt.hashSync('1234',8),
+            isAdmin:false,
+        }
+    ],
     products:[
         {
-            _id: '1',
             name: 'ZZ Kurti Full Length',
             category:'Kurti',
             image: '/images/1.jpg',
@@ -13,7 +28,6 @@ const data = {
             description: 'high quality product'
         },
         {
-            _id: '2',
             name: 'Zollo Kurti Full Length',
             category:'Top',
             image: '/images/1.jpg',
@@ -25,7 +39,6 @@ const data = {
             description: 'high quality product'
         },
         {
-            _id: '3',
             name: 'Maxx Umbrella Top',
             category:'Kurti',
             image: '/images/2.jpg',
@@ -37,7 +50,6 @@ const data = {
             description: 'high quality product'
         },
         {
-            _id: '4',
             name: 'Anna Full Length Printed Kurti',
             category:'Kurti',
             image: '/images/3.jpg',
@@ -49,7 +61,6 @@ const data = {
             description: 'high quality product'
         },
         {
-            _id: '5',
             name: 'Bella Kurti',
             category:'Kurti',
             image: '/images/2.jpg',
