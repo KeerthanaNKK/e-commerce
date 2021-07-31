@@ -13,7 +13,7 @@ dotenv.config();
 
 const conn_url =`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.zffwc.mongodb.net/whatsappdb?retryWrites=true&w=majority`;
 
-mongoose.connect(conn_url || "mongodb://localhost:5000", {
+mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:5000", {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
