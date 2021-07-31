@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-import { detailsOrder } from '../actions/orderActions';
+import { deliverOrder, detailsOrder } from '../actions/orderActions';
+import { ORDER_DELIVER_RESET } from '../constants/orderConstants';
 
 function OrderScreen(props) {
     const orderId = props.match.params.id; 
@@ -11,9 +12,27 @@ function OrderScreen(props) {
     const { order, loading, error} = orderDetails;
     const dispatch= useDispatch();
     
+    const userSignin = useSelector(state => state.userSignin);
+    const { userInfo } = userSignin;
+
+    const orderDeliver = useSelector(state => state.orderDeliver);
+    const {loading: loadingDeliver,
+            error: errorDeliver,
+            success:successDeliver,} = orderDeliver;
+
     useEffect(() => {
-        dispatch(detailsOrder(orderId))
-    }, [dispatch, orderId])
+        if(!order ||
+            successDeliver||
+            (order && order._id !== orderId)){
+                dispatch({type:ORDER_DELIVER_RESET})
+                dispatch(detailsOrder(orderId))
+            }
+        
+    }, [dispatch, order, orderId, successDeliver])
+    const deliverHandler = () =>{
+        dispatch(deliverOrder(order._id))
+    }
+
     return loading ? (<LoadingBox></LoadingBox>) :
      error ? 
     (<MessageBox variant="danger">{error}</MessageBox>)
@@ -112,6 +131,18 @@ function OrderScreen(props) {
                                     <div><strong>${order.totalPrice.toFixed(2)}</strong></div>
                                 </div>
                             </li>
+                            <li>
+                                <div>{order.isPaid}</div>
+                            </li>
+                            {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                <li>
+                                    {loadingDeliver && <LoadingBox></LoadingBox>}
+                                    {errorDeliver && <MessageBox variant="danger">{errorDeliver}</MessageBox>}
+                                    <button type="button" className="primary block" onClick={deliverHandler}>
+                                        Deliver Order
+                                    </button>
+                                </li>
+                            )}
                         </ul>
                     </div>
                             

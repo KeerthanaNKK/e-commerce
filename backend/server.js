@@ -8,11 +8,12 @@ import orderRouter from './routers/orderRouter.js';
 import uploadRouter from './routers/uploadRouter.js';
 import path from 'path';
 
-
 dotenv.config();
-const connection_url = "mongodb+srv://admin:gH5SZNcQbDi56cgG@cluster0.zffwc.mongodb.net/whatsappdb?retryWrites=true&w=majority";
 
-mongoose.connect(connection_url|| "mongodb://localhost:5000", {
+
+const conn_url =`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.zffwc.mongodb.net/whatsappdb?retryWrites=true&w=majority`;
+
+mongoose.connect(conn_url || "mongodb://localhost:5000", {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
