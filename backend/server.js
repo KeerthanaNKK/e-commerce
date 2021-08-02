@@ -11,7 +11,6 @@ import path from 'path';
 dotenv.config();
 
 
-const conn_url =`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.zffwc.mongodb.net/whatsappdb?retryWrites=true&w=majority`;
 
 mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:5000", {
   useCreateIndex: true,
