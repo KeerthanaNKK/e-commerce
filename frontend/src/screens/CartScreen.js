@@ -9,7 +9,7 @@ function CartScreen(props) {
     const qty = props.location.search ? Number(props.location.search.split('=')[1]):1;
     
     const cart = useSelector(state =>state.cart);
-    const { cartItems } = cart;
+    const { cartItems, error } = cart;
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -30,6 +30,7 @@ function CartScreen(props) {
         <div className="row top">
             <div className="col-2">
                 <h1>Shopping Cart</h1>
+                {error && cartItems.length>0 && <MessageBox variant="danger">{error}</MessageBox>}
                 {
                     cartItems.length === 0 ? 
                     <MessageBox>

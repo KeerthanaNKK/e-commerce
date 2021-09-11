@@ -1,15 +1,14 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
+import User from '../models/userModel.js'
+import Product from '../models/productModel.js'
 import { isAdmin, isAuth, isSellerOrAdmin } from '../utils.js';
 
 const orderRouter = express.Router();
 
 
-orderRouter.get('/mine', isAuth, expressAsyncHandler(async (req,res)=>{
-    const orders = await Order.find({user: req.user._id});
-    res.send(orders);
-}))
+
 
 orderRouter.get(
     '/',
@@ -24,12 +23,62 @@ orderRouter.get(
     })
 )
 
+orderRouter.get(
+    '/summary',
+    isAuth,
+    isAdmin,
+    expressAsyncHandler(async (req,res)=>{
+        const orders = await Order.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    numOrders: {$sum:1},
+                    totalSales:{$sum : '$totalPrice'},
+                },
+            },
+        ]);
+
+        const users = await User.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    numUsers: {$sum: 1},
+                }
+            }
+        ]);
+
+        const dailyOrders = await Order.aggregate([
+            {
+                $group:{
+                    _id: {$dateToString: {format: '%Y-%m-%d', date:'$createdAt'}},
+                    orders: {$sum :1},
+                    sales:{$sum : '$totalPrice'},
+                },
+            },
+            { $sort: {_id:1}},
+        ]);
+
+        const productCategories = await Product.aggregate([
+            {$group:{
+                _id: '$category',
+                count:{$sum:1},
+            }}
+        ]);
+        res.send({users, orders,dailyOrders,productCategories})
+    })
+
+)
+
+orderRouter.get('/mine', isAuth, expressAsyncHandler(async (req,res)=>{
+    const orders = await Order.find({user: req.user._id});
+    res.send(orders);
+}))
 
 orderRouter.post('/',
 isAuth,
 expressAsyncHandler(async (req,res)=>{
     if(req.body.orderItems.length === 0 ) {
-        res.statusCode(400).send({message: 'Cart is empty'})
+        res.status(400).send({message: 'Cart is empty'})
     }else {
         const order = new Order({
             orderItems: req.body.orderItems,
@@ -40,9 +89,10 @@ expressAsyncHandler(async (req,res)=>{
             taxPrice: req.body.taxPrice,
             totalPrice: req.body.totalPrice,
             user: req.user._id,
+            seller: req.body.orderItems[0].seller || req.user._id,
         });
         const createdOrder = await order.save();
-        res.status(201).send({message:'New Oreder Created', order:createdOrder})
+        res.status(201).send({message:'New Order Created', order:createdOrder})
 
     }
 }));
@@ -60,7 +110,7 @@ orderRouter.get('/:id',isAuth, expressAsyncHandler(async (req,res) =>{
 orderRouter.delete(
     '/:id',
     isAuth,
-    isAdmin,
+    isSellerOrAdmin,
     expressAsyncHandler(async (req,res)=>{
         const order = await Order.findById(req.params.id);
         if(order){
@@ -89,5 +139,6 @@ orderRouter.put(
         }
     })
 )
+
 
 export default orderRouter;

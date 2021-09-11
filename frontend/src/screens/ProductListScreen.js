@@ -9,7 +9,8 @@ import { PRODUCT_CREATE_RESET, PRODUCT_DELETE_RESET } from '../constants/product
 function ProductListScreen(props) {
     const { pageNumber = 1 } = useParams();
 
-    //const sellerMode = props.match.path.indexOf('/seller') >=0;
+    const sellerMode = props.match.path.indexOf('/seller') >=0;
+    console.log(sellerMode)
 
     const productList = useSelector(state => state.productList);
     const {loading, error, products, page, pages} = productList;
@@ -38,8 +39,8 @@ function ProductListScreen(props) {
         if(successDelete){
             dispatch({type:PRODUCT_DELETE_RESET});
         }
-        dispatch(listProducts({pageNumber}));
-    }, [dispatch, createdProduct, props.history, successCreate, userInfo._id, pageNumber, successDelete]);
+        dispatch(listProducts({seller: sellerMode ? userInfo._id:'',pageNumber}));
+    }, [dispatch, createdProduct, props.history, successCreate, userInfo._id, pageNumber, successDelete, sellerMode]);
     
     const deleteHandler=(product)=>{
        if(window.confirm('Are you sure to delete?')){

@@ -10,7 +10,7 @@ const productRouter = express.Router();
 productRouter.get(
     '/',
     expressAsyncHandler(async (req,res)=>{
-    const pageSize = Number(req.query.size) || 3;
+    const pageSize = 3;
     const page = Number(req.query.pageNumber) || 1;
     const name = req.query.name || '';
     const category = req.query.category || '';
@@ -55,13 +55,21 @@ productRouter.get(
         ...priceFilter,
         ...ratingFilter,
     })
-    .populate('seller.name seller.logo')
+    .populate('seller','seller.name seller.logo')
     .sort(sortOrder)
     .skip((pageSize * (page-1)))
     .limit(pageSize);
     
-    res.send({products, page,count, pages: Math.ceil(count/pageSize)});
+    res.send({products, page, pages: Math.ceil(count/pageSize)});
 }));
+
+productRouter.get(
+    '/categories',
+    expressAsyncHandler(async (req,res)=>{
+        const categories = await Product.find().distinct('category');
+        res.send(categories);
+    })
+)
 
 
 productRouter.get('/seed',expressAsyncHandler(async (req,res)=> {
@@ -137,5 +145,34 @@ productRouter.delete('/:id',expressAsyncHandler(async (req,res)=>{
         }
   
 }))
+
+productRouter.post(
+    '/:id/reviews',
+    isAuth,
+    expressAsyncHandler(async (req,res)=>{
+        const productId = req.params.id;
+        const product = await Product.findById(productId);
+        if(product){
+            if(product.reviews.find((x)=> x.name===req.user.name)){
+                return res.status(400).send({message:'You already submitted a review'});
+            }
+            const review = {
+                name:req.user.name,
+                rating:Number(req.body.rating),
+                comment:req.body.comment,
+            };
+            product.reviews.push(review);
+            product.numReviews = product.reviews.length;
+            product.rating= product.reviews.reduce((a,c)=>c.rating+a,0)/product.reviews.length;
+            const updatedProduct = await product.save();
+            res.status(201).send({
+                message:'Review Created',
+                review:updatedProduct.reviews[updatedProduct.reviews.length-1],
+            })
+        }else{
+            res.status(404).send({message:'Product Not Found'})
+        }
+    })
+)
 
 export default productRouter;

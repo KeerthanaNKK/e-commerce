@@ -2,9 +2,9 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { cartReducer } from './reducers/cartReducers.js';
-import { orderCreateReducer, orderDeleteReducer, orderDeliverReducer, orderDetailsReducer, orderListReducer, orderMineListReducer } from './reducers/orderReducers.js';
-import { productCreateReducer, productDeleteReducer, productDetailsReducer, productListReducer, productUpdateReducer } from './reducers/productReducers.js';
-import { userDeleteReducer, userDetailsReducer, userListReducer, userRegisterReducer, userSigninReducer, userUpdateProfileReducer, userUpdateReducer } from './reducers/userReducers.js';
+import { orderCreateReducer, orderDeleteReducer, orderDeliverReducer, orderDetailsReducer, orderListReducer, orderMineListReducer, orderSummaryReducer } from './reducers/orderReducers.js';
+import { productCategoryListReducer, productCreateReducer, productDeleteReducer, productDetailsReducer, productListReducer, productReviewCreateReducer, productUpdateReducer } from './reducers/productReducers.js';
+import { userAddressMapReducer, userDeleteReducer, userDetailsReducer, userListReducer, userRegisterReducer, userSigninReducer, userTopSellerListReducer, userUpdateProfileReducer, userUpdateReducer } from './reducers/userReducers.js';
 
 const initialState ={
     userSignin: {
@@ -37,7 +37,11 @@ const reducer = combineReducers({
     userList : userListReducer,
     userDelete : userDeleteReducer,
     userUpdate:userUpdateReducer,
-    
+    userTopSellerList : userTopSellerListReducer,
+    productCategoryList : productCategoryListReducer,
+    productReviewCreate:productReviewCreateReducer,
+    userAddressMap:userAddressMapReducer,
+    orderSummary:orderSummaryReducer,
 })
 
 

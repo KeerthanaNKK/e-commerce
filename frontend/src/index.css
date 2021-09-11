@@ -153,14 +153,21 @@ a.brand{
   flex: 2 1 40rem;
 }
 
+.col-3{
+  flex: 32 1 75rem;
+}
+
 .min-30{
   min-width: 300px;
 }
 
+.p-1{
+  padding: 10px;
+}
 /**Image*/
 
 img{
-border-radius:50px; 
+border-radius:5px; 
 }
 
 img.small{
@@ -202,7 +209,7 @@ img.large{
 
 /*RATING*/
 
-span{
+.rating span{
   color:#f0c040;
   margin :1px;
 }
@@ -344,4 +351,88 @@ span{
 
 .pagination a.active{
   font-weight: bold;
+}
+/*CAROUSEL*/
+
+.carousel .slide img{
+  max-width: 30rem;
+}
+.carousel{
+  background-color: #000000;
+}
+
+/*SEARCH*/
+.search button{
+  border-radius: 0 5px 5px 0;
+  border-right: none;
+  margin-right: 5px;
+}
+
+.search input{
+  border-radius: 5px 0 0 5px;
+  border-right: none;
+  margin-left: 5px;
+}
+
+.active{
+  font-weight: bold;
+}
+
+/*MAP*/
+
+.full-container{
+  margin: -10px;
+  height: calc(100% + 2rem);
+}
+
+.map-input-box{
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 5px auto;
+  width: 250px;
+  height: 40px;
+  display: flex;
+}
+
+.map-input-box input{
+  border-radius: 10px 0 0 10px;
+  border-right: 0;
+}
+
+.map-input-box button{
+  border-radius: 0 10px 10px 0;
+  border-left: 0;
+}
+
+/*DASHBOARD*/
+
+.summary > li{
+  border: 1px #c0c0c0 solid;
+  margin: 20px;
+  border-radius: 5px;
+  flex: 1 1 200px;
+}
+
+.summary-title{
+  font-size: 20px;
+  padding:10px;
+}
+
+.summary-body{
+  font-size: 40px;
+  padding: 10px;
+  text-align: center;
+}
+
+.summary-title.color1{
+  background-color: #f0e0e0;
+}
+
+.summary-title.color2{
+  background-color: #e0f0e0;
+}
+.summary-title.color3{
+  background-color: #e0e0f0;
 }
